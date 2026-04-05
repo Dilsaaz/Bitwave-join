@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bitwave Global</title>
+
+<style>
+body{
+margin:0;
+font-family:Arial;
+background:#0b0f1a;
+color:white;
+}
+
+/* HEADER */
+header{
+display:flex;
+justify-content:space-between;
+padding:15px;
+background:#111;
+}
+
+header h1{color:gold;}
+
+/* BUTTONS */
+button{
+padding:10px;
+border:none;
+border-radius:5px;
+cursor:pointer;
+margin-left:5px;
+font-weight:bold;
+}
+
+.gold{background:gold;color:black;}
+.blue{background:#2b6fff;color:white;}
+
+/* SECTIONS */
+section{display:none;padding:20px;}
+.active{display:block;}
+
+/* HERO */
+.hero{
+text-align:center;
+padding:40px;
+}
+
+/* CARDS */
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+gap:10px;
+}
+
+.card{
+background:#111;
+padding:15px;
+border-radius:10px;
+}
+
+/* TICKER */
+.ticker{
+margin-top:20px;
+padding:10px;
+background:#111;
+border:1px solid gold;
+border-radius:8px;
+}
+
+/* FORM */
+input{
+width:100%;
+padding:10px;
+margin-top:10px;
+border-radius:5px;
+border:none;
+}
+
+.btn{
+background:gold;
+color:black;
+width:100%;
+padding:10px;
+margin-top:10px;
+}
+
+/* FOOTER */
+footer{
+text-align:center;
+padding:20px;
+color:#777;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>BITWAVE GLOBAL</h1>
+
+<div>
+<button class="gold" onclick="showTab('home')">Home</button>
+<button class="gold" onclick="showTab('retopup')">Re-Top Up</button>
+<button class="blue" onclick="showTab('telegram')">Telegram</button>
+</div>
+</header>
+
+<!-- HOME -->
+<section id="home" class="active">
+
+<div class="hero">
+<h2>AI Trading Platform</h2>
+<p>Live Crypto Market System</p>
+</div>
+
+<div class="cards">
+<div class="card">Minimum Deposit: $250</div>
+<div class="card">Withdraw Time: 24 Hours</div>
+<div class="card">Daily Profit: 10% - 15%</div>
+<div class="card">5 Level Income</div>
+<div class="card">VIP Bonus</div>
+<div class="card">Club Income</div>
+</div>
+
+<div class="ticker" id="ticker">
+Loading market...
+</div>
+
+</section>
+
+<!-- RETOPUP -->
+<section id="retopup">
+
+<h2>Re-Top Up Wallet</h2>
+
+<input type="text" id="uid" placeholder="Enter User ID">
+
+<button class="btn" onclick="sendTelegram()">Submit</button>
+
+<br><br>
+
+<a href="https://docs.google.com/forms/d/e/1FAIpQLSeIE7FoT77E4l3j-BIZ0c32Rl47URYqvy5jVhRj8Cw0-8C5Ow/viewform?usp=dialog">
+<button class="btn">Open Form</button>
+</a>
+
+</section>
+
+<!-- TELEGRAM -->
+<section id="telegram">
+
+<h2>Join Telegram</h2>
+
+<a href="https://t.me/Bitwave1">
+<button class="btn">Join Telegram</button>
+</a>
+
+</section>
+
+<footer>
+© Bitwave Global
+</footer>
+
+<script>
+
+/* TAB SWITCH */
+function showTab(id){
+document.querySelectorAll("section").forEach(s=>s.classList.remove("active"));
+document.getElementById(id).classList.add("active");
+}
+
+/* TELEGRAM */
+function sendTelegram(){
+let id = document.getElementById("uid").value;
+
+if(id==""){
+alert("Enter User ID");
+return;
+}
+
+let msg = "Hello, I am a Bitwave Global user. Please send my account details. User ID: " + id;
+
+window.open("https://t.me/Bitwave1?text="+encodeURIComponent(msg));
+}
+
+/* LIVE PRICE */
+async function loadMarket(){
+try{
+let r = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,binancecoin&vs_currencies=usd");
+let d = await r.json();
+
+document.getElementById("ticker").innerHTML =
+"BTC: $" + d.bitcoin.usd +
+" | ETH: $" + d.ethereum.usd +
+" | BNB: $" + d.binancecoin.usd;
+
+}catch{
+document.getElementById("ticker").innerHTML="Market loading...";
+}
+}
+
+loadMarket();
+setInterval(loadMarket,5000);
+
+</script>
+
+</body>
+</html>
